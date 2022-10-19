@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PolishEnglishDictionary.MainPage">
+
+    <StackLayout>
+        <Frame BackgroundColor="MediumVioletRed" Padding="24" CornerRadius="0">
+                <Label Text="Dictionarty Polish-English!" HorizontalTextAlignment="Center" TextColor="Bisque" FontSize="36"/>
+        </Frame>
+
+            <Image Source="Images.flag.jpg" VerticalOptions="Center"></Image>
+
+            <Button Text="Zaczynam naukę!" Grid.Column="1" Command="{Binding StartLearningCommand}"  
+                    VerticalOptions="EndAndExpand"
+                    BorderWidth="2"  
+                    CornerRadius="50"
+                    TextColor="MediumVioletRed"
+                    BorderColor="MediumVioletRed"
+                    BackgroundColor="Transparent"
+                    WidthRequest="15" Margin="5"  HeightRequest="50"/>
+
+            <Button Text="Zobacz swoje postępy" Grid.Column="1" Command="{Binding StudyProgressCommand}"
+                        BorderWidth="2"
+                    VerticalOptions="End"
+                        CornerRadius="50"
+                        TextColor="MediumVioletRed"
+                        BorderColor="MediumVioletRed"
+                        BackgroundColor="Transparent"
+                        WidthRequest="15" Margin="5" HeightRequest="50"/>
+        
+                <!--<Label HorizontalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Don't have an account?  " TextColor="DarkSlateBlue"/>
+                                <Span Text="Register Now!" TextColor="DarkSlateBlue" FontAttributes="Bold" TextDecorations="Underline"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                 </Label>-->
+
+
+
+    </StackLayout>
+
+</ContentPage>

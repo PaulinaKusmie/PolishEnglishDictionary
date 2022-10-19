@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PolishEnglishDictionary.DictionaryPage">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="Beige">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="4*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+
+                <Label Text="{Binding Effect}" Grid.Row="0" Grid.ColumnSpan="3" 
+                       TextColor="{Binding EffectColor}"
+                       FontSize="Large" 
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"  />
+
+                <Button Text="{Binding Word}" Grid.Row="1" Grid.ColumnSpan="3" Command="{Binding TranslateCommand}"  
+                        TextColor="Beige"
+                        BorderColor="Black"
+                        BackgroundColor="#651A4A"
+                        FontAttributes="Bold"
+                        FontSize="Large"
+                        FontFamily="Helvetica"
+                        WidthRequest="50" Margin="5" HeightRequest="150" />
+                <Label Text="Wpisz tłumaczenie" Grid.Row="2" Grid.Column="0"  VerticalOptions="Center"/>
+                <Entry Text="{Binding UserTranslate, Mode=TwoWay}" Grid.Row="2"  Grid.Column="1"  VerticalOptions="Center"/>
+
+                <Button Text="Sprawdź" Grid.Row="2" Grid.Column="2" Command="{Binding CheckCommand}"
+                        BorderWidth="2"
+                        TextColor="#651A4A"
+                        BorderColor="#651A4A"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center"
+                        CornerRadius="50"
+                        WidthRequest="40" Margin="5" HeightRequest="37"/>
+                
+                <Button Text="Już umiem" Grid.Row="3" Grid.Column="0" Command="{Binding RememberCommand}"
+                        BorderWidth="2"
+                        TextColor="ForestGreen"
+                        BorderColor="ForestGreen"
+                        BackgroundColor="Transparent"
+                        VerticalOptions="Center"
+                        HorizontalOptions="StartAndExpand"
+                        CornerRadius="50"
+                        WidthRequest="170" Margin="5" HeightRequest="60"/>
+
+                <Button Text="Muszę powtórzyć" Grid.Row="3" Grid.Column="2" Command="{Binding NoRememberCommand}"
+                        BorderWidth="2"
+                        TextColor="DarkRed"
+                        BorderColor="DarkRed"
+                        BackgroundColor="Transparent"
+                         VerticalOptions="Center"
+                        HorizontalOptions="EndAndExpand"
+                        CornerRadius="50"
+                        WidthRequest="170" Margin="5" HeightRequest="60"/>
+
+
+            </Grid>
+
+
+            <!--<Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Don't have an account?  " TextColor="DarkSlateBlue"/>
+                        <Span Text="Register Now!" TextColor="DarkSlateBlue" FontAttributes="Bold" TextDecorations="Underline"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>-->
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
