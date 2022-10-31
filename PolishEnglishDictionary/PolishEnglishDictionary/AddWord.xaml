@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PolishEnglishDictionary.AddWord">
+    <ContentPage.Content>
+        <StackLayout>
+            <Frame BackgroundColor="MediumVioletRed" Padding="24" CornerRadius="0">
+                <Label Text="Dodaj słowo" HorizontalTextAlignment="Center" TextColor="Bisque" FontSize="36"/>
+            </Frame>
+
+            <Label Text="Wpisz wyrażenie po polsku" Grid.Row="2" Grid.Column="0"  VerticalOptions="Center"/>
+            <Entry Text="{Binding PolishWord, Mode=TwoWay}" Grid.Row="2"  Grid.Column="1"  VerticalOptions="Center"/>
+
+            <Label Text="Wpisz tłumaczenie wyrażenia" Grid.Row="2" Grid.Column="0"  VerticalOptions="Center"/>
+            <Entry Text="{Binding EnglishWord, Mode=TwoWay}" Grid.Row="2"  Grid.Column="1"  VerticalOptions="Center"/>
+
+
+            <Button Text="Dodaj słowo" Grid.Column="1" Command="{Binding AddCommand}"  
+                    VerticalOptions="EndAndExpand"
+                    BorderWidth="2"  
+                    CornerRadius="50"
+                    TextColor="MediumVioletRed"
+                    BorderColor="MediumVioletRed"
+                    BackgroundColor="Transparent"
+                    WidthRequest="15" Margin="5"  HeightRequest="50"/>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

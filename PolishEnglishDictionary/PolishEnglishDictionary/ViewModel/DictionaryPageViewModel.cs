@@ -115,7 +115,7 @@ namespace PolishEnglishDictionary.ViewModel
             }
 
 
-           if(UserTranslate == answear)
+           if(UserTranslate.ToLower() == answear.ToLower())
            {
                 Effect = "Gratulacje! Poprawna odpowiedź!";
                 EffectColor = Color.Green;
