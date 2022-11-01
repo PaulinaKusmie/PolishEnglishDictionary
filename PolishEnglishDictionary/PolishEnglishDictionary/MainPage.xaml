@@ -2,45 +2,78 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PolishEnglishDictionary.MainPage">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <BoxView Grid.RowSpan="4" Grid.ColumnSpan="2">
+            <BoxView.Background>
+                <LinearGradientBrush>
+                    <GradientStop Color="#161616" Offset="0"/>
+                    <GradientStop Color="#30343F" Offset="0"/>
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
 
-    <StackLayout>
-        <Frame BackgroundColor="MediumVioletRed" Padding="24" CornerRadius="0">
-                <Label Text="Dictionarty Polish-English!" HorizontalTextAlignment="Center" TextColor="Bisque" FontSize="36"/>
-        </Frame>
+        <Grid Grid.RowSpan="4" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300"></RowDefinition>
+                <RowDefinition Height="150" ></RowDefinition>
+                <RowDefinition Height="*" ></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-            <Image Source="unnamed.png" VerticalOptions="Center"></Image>
+            <Path Data="M0,0H375V262.033s-9.025,4.813-55.426-10.71-70.141-83.047-130.3-83.22-83.544,67.7-130.893,83.22S0,262.033,0,262.033Z"
+                  Aspect="Fill" Fill="MediumVioletRed" Grid.ColumnSpan="2" Grid.Row="0" />
+            <Image Source="menu.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="25"/>
+            <Image Source="search.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="25"/>
+           
 
-            <Button Text="Zaczynam naukę!" Grid.Column="1" Command="{Binding StartLearningCommand}"  
-                    VerticalOptions="EndAndExpand"
-                    BorderWidth="2"  
-                    CornerRadius="50"
-                    TextColor="MediumVioletRed"
-                    BorderColor="MediumVioletRed"
-                    BackgroundColor="Transparent"
-                    WidthRequest="15" Margin="5"  HeightRequest="50"/>
-
-            <Button Text="Zobacz swoje postępy" Grid.Column="1" Command="{Binding StudyProgressCommand}"
-                        BorderWidth="2"
-                    VerticalOptions="End"
+            <Button Text="Zaczynam naukę!" Grid.ColumnSpan="2" Grid.RowSpan="2" Command="{Binding StartLearningCommand}"  
+                        VerticalOptions="EndAndExpand"
+                        BorderWidth="2"  
                         CornerRadius="50"
                         TextColor="MediumVioletRed"
                         BorderColor="MediumVioletRed"
                         BackgroundColor="Transparent"
-                        WidthRequest="15" Margin="5" HeightRequest="50"/>
+                        WidthRequest="15" Margin="5"  HeightRequest="50"/>
+
+            <Button Text="Zobacz swoje postępy" Grid.ColumnSpan="2" Grid.RowSpan="3" Command="{Binding StudyProgressCommand}"
+                            BorderWidth="2"
+                        VerticalOptions="End"
+                            CornerRadius="50"
+                            TextColor="MediumVioletRed"
+                            BorderColor="MediumVioletRed"
+                            BackgroundColor="Transparent"
+                            WidthRequest="15" Margin="5" HeightRequest="50"/>
 
 
 
-            <Button Text="Dodaj słowo" Grid.Column="1" Command="{Binding AddWorldCommand}"
-                                BorderWidth="2"
-                            VerticalOptions="End"
-                                CornerRadius="50"
-                                TextColor="MediumVioletRed"
-                                BorderColor="MediumVioletRed"
-                                BackgroundColor="Transparent"
-                                WidthRequest="15" Margin="5" HeightRequest="50"/>
+            <Button Text="Dodaj słowo"  Grid.ColumnSpan="2" Grid.RowSpan="4" Command="{Binding AddWorldCommand}"
+                                    BorderWidth="2"
+                                VerticalOptions="End"
+                                    CornerRadius="50"
+                                    TextColor="MediumVioletRed"
+                                    BorderColor="MediumVioletRed"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="15" Margin="5" HeightRequest="50"/>
 
 
 
-    </StackLayout>
+        </Grid>
+    </Grid>
 
 </ContentPage>
