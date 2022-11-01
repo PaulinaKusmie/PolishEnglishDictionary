@@ -113,8 +113,8 @@ namespace PolishEnglishDictionary.ViewModel
         private void Translate()
         {
 
-
-
+            Effect = "Tłumaczenie słowa to " + dic.EnglishWord;
+            EffectColor = Color.WhiteSmoke;
         }
 
 
@@ -253,7 +253,7 @@ namespace PolishEnglishDictionary.ViewModel
         private void Connection()
         {
             string srvrbdname = "DictionaryDatabase";
-            string srvrname = "192.168.8.105";
+            string srvrname = "172.20.10.5";
             string srvarusername = "Paulina";
             string srvrpassword = "123456";
             string sqlconn = $"Data Source={srvrname};Initial Catalog={srvrbdname};User ID={srvarusername};Password={srvrpassword}";

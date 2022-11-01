@@ -3,16 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PolishEnglishDictionary.MainPage">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+
         
         <BoxView Grid.RowSpan="4" Grid.ColumnSpan="2">
             <BoxView.Background>
@@ -38,10 +29,12 @@
 
             <Path Data="M0,0H375V262.033s-9.025,4.813-55.426-10.71-70.141-83.047-130.3-83.22-83.544,67.7-130.893,83.22S0,262.033,0,262.033Z"
                   Aspect="Fill" Fill="MediumVioletRed" Grid.ColumnSpan="2" Grid.Row="0" />
-            <Image Source="menu.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="Start" VerticalOptions="Start" Margin="25"/>
-            <Image Source="search.png" WidthRequest="20" HeightRequest="20" HorizontalOptions="End" VerticalOptions="Start" Margin="25"/>
-           
 
+            <Image x:Name="BannerImg" Source="ped.png" Grid.ColumnSpan="2"  Grid.RowSpan="2"   HeightRequest="195" WidthRequest="195" HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            <Image Source="magnifier.png" HorizontalOptions="Start" VerticalOptions="Start"  HeightRequest="20" WidthRequest="20" Margin="25"/>
+            <Image Source="menu.png" HorizontalOptions="End" VerticalOptions="Start"  Grid.Column="1" HeightRequest="20" WidthRequest="20" Margin="25"/>
             <Button Text="Zaczynam naukę!" Grid.ColumnSpan="2" Grid.RowSpan="2" Command="{Binding StartLearningCommand}"  
                         VerticalOptions="EndAndExpand"
                         BorderWidth="2"  

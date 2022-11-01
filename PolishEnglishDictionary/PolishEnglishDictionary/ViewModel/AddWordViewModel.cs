@@ -74,7 +74,7 @@ namespace PolishEnglishDictionary.ViewModel
         public void Connection()
         {
             string srvrbdname = "DictionaryDatabase";
-            string srvrname = "192.168.8.105";
+            string srvrname = "172.20.10.5";
             string srvarusername = "Paulina";
             string srvrpassword = "123456";
             string sqlconn = $"Data Source={srvrname};Initial Catalog={srvrbdname};User ID={srvarusername};Password={srvrpassword}";
