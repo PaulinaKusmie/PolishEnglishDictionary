@@ -23,7 +23,11 @@
                     BorderColor="MediumVioletRed"
                     BackgroundColor="Transparent"
                     WidthRequest="15" Margin="5"  HeightRequest="50"/>
-            
+
+            <Label Text="{Binding CountWorlds, Mode=TwoWay}" Grid.Row="2" Grid.Column="0"  VerticalOptions="Center"/>
+
+
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -14,6 +14,8 @@ namespace PolishEnglishDictionary.ViewModel
 
         private string polishWord = string.Empty;
         private string englishWord = string.Empty;
+        private string countWorlds = string.Empty;
+
         SqlConnection sqlConnection;
 
         #endregion
@@ -27,7 +29,6 @@ namespace PolishEnglishDictionary.ViewModel
             {
 
                 englishWord = value;
-
                 OnPropertyChanged();
             }
         }
@@ -40,10 +41,23 @@ namespace PolishEnglishDictionary.ViewModel
             {
 
                 polishWord = value;
-
                 OnPropertyChanged();
             }
         }
+
+        public string CountWorlds
+        {
+            get => countWorlds;
+            set
+            {
+
+                countWorlds = value;
+                OnPropertyChanged();
+            }
+        }
+
+ 
+        
         #endregion
 
         public ICommand AddCommand { get; set; }
@@ -51,20 +65,39 @@ namespace PolishEnglishDictionary.ViewModel
         public AddWordViewModel()
         {
             AddCommand = new Command(Add);
- 
+
             Connection();
+            Count();
         }
 
 
         public void Connection()
         {
             string srvrbdname = "DictionaryDatabase";
-            string srvrname = "192.168.8.100";
+            string srvrname = "192.168.8.105";
             string srvarusername = "Paulina";
             string srvrpassword = "123456";
             string sqlconn = $"Data Source={srvrname};Initial Catalog={srvrbdname};User ID={srvarusername};Password={srvrpassword}";
             sqlConnection = new SqlConnection(sqlconn);
         }
+
+        private void Count()
+        {
+            int number = 0;
+            sqlConnection.Open();
+            string query = "SELECT count(*) as number From Words; ";
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            SqlDataReader rader = command.ExecuteReader();
+            while (rader.Read())
+            {
+              number = Convert.ToInt32(rader["number"]);
+            }
+            sqlConnection.Close();
+
+            CountWorlds = "Ilość słów w słowniku " + number.ToString();
+
+        }
+
 
         private async void Add()
         {
@@ -80,7 +113,6 @@ namespace PolishEnglishDictionary.ViewModel
                 {
                     id = Convert.ToInt32(rader["Id"]);
                 }
-                //command.ExecuteNonQuery();
                 sqlConnection.Close();
 
                 id++;
@@ -92,16 +124,19 @@ namespace PolishEnglishDictionary.ViewModel
                     return;
                 }
                 sqlConnection.Open();
-                using (SqlCommand command2 = new SqlCommand("Insert into Words VALUES(@Id, @EnglishWorld, @PolishWorld )", sqlConnection))
+                using (SqlCommand command2 = new SqlCommand("Insert into Words VALUES(@Id, @EnglishWorld, @PolishWorld, @IKnow)", sqlConnection))
                 {
                     command2.Parameters.Add(new SqlParameter("Id", id));
                     command2.Parameters.Add(new SqlParameter("EnglishWorld", EnglishWord));
                     command2.Parameters.Add(new SqlParameter("PolishWorld", PolishWord));
+                    command2.Parameters.Add(new SqlParameter("IKnow", false));
                     command2.ExecuteNonQuery();
                 }
                 sqlConnection.Close();
+                Count();
+                ClearState();
 
-                //await App.Current.MainPage.DisplayAlert("Uwaga", "Słowo zapisane", "Ok");
+
             }
             catch(Exception ex)
             {
@@ -109,6 +144,12 @@ namespace PolishEnglishDictionary.ViewModel
                 throw;
             }
            
+        }
+
+        private void ClearState()
+        {
+            EnglishWord = string.Empty;
+            PolishWord = string.Empty;
         }
 
 

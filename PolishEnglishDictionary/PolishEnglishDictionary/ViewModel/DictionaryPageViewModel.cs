@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -14,13 +15,16 @@ namespace PolishEnglishDictionary.ViewModel
         private string userTranslate = string.Empty;
         private string effect = string.Empty;
         private Color effectColor;
-        public List<Tuple<string, string>> myDic = new List<Tuple<string, string>>();
+        private Dictionary dic = new Dictionary();
 
         INavigation Navigation => Application.Current.MainPage.Navigation;
         #endregion
 
         public ICommand TranslateCommand { get; set; }
         public ICommand CheckCommand { get; set; }
+        public ICommand RememberCommand { get; set; }
+        public ICommand NoRememberCommand { get; set; }
+
 
         #region Properties
         public string Word
@@ -28,13 +32,13 @@ namespace PolishEnglishDictionary.ViewModel
             get => word;
             set
             {
-  
+
                 word = value;
-                
+
                 OnPropertyChanged();
             }
         }
-        
+
         public string UserTranslate
         {
             get => userTranslate;
@@ -74,7 +78,7 @@ namespace PolishEnglishDictionary.ViewModel
             }
         }
 
-        
+
 
 
         #endregion
@@ -83,12 +87,26 @@ namespace PolishEnglishDictionary.ViewModel
         {
             TranslateCommand = new Command(Translate);
             CheckCommand = new Command(Check);
+            RememberCommand = new Command(Remember);
+            NoRememberCommand = new Command(NoRemember);
+            Word = dic.PolishWorld;
 
-            AddTuple("Dog","Pies");
-            AddTuple("Cat", "Kot");
-            AddTuple("Monkey", "Małpa");
+        }
 
-            Word = myDic[0].Item1;
+        private void Remember()
+        {
+            dic.IKnowing(dic.Id, true);
+            ClearState();
+            dic.Connect();
+            Word = dic.PolishWorld;
+        }
+
+
+        private void NoRemember()
+        {
+            ClearState();
+            dic.Connect();
+            Word = dic.PolishWorld;
         }
 
 
@@ -103,35 +121,25 @@ namespace PolishEnglishDictionary.ViewModel
         
         private void Check()
         {
-            string answear = string.Empty;
 
-            foreach (var v in myDic)
-            {
-                if (v.Item1 == Word)
-                {
-                    answear = v.Item2;
-                    break;
-                } 
-            }
-
-
-           if(UserTranslate.ToLower() == answear.ToLower())
+           if(UserTranslate.ToLower() == dic.EnglishWord.ToLower())
            {
                 Effect = "Gratulacje! Poprawna odpowiedź!";
                 EffectColor = Color.Green;
            }
            else
            {
-                Effect = $"Nie udało się, poprawna odpowiedź to {answear}";
+                Effect = $"Nie udało się, poprawna odpowiedź to {dic.EnglishWord}";
                 EffectColor = Color.Red;
            }
 
         }
 
-
-        public void AddTuple(string englishWord, string polishWorld)
+        private void ClearState()
         {
-            myDic.Add(new Tuple<string, string>(englishWord, polishWorld));
+            UserTranslate = string.Empty;
+            Word = string.Empty;
+            Effect = string.Empty;
         }
 
         #region PropertyChange
@@ -148,8 +156,26 @@ namespace PolishEnglishDictionary.ViewModel
     {
         private string englishWord;
         private string polishWorld;
-        public List<Tuple<string, string>> myDic = new List<Tuple<string, string>>();
+        SqlConnection sqlConnection;
+        string answear = string.Empty;
+        string world = string.Empty;
+        bool iKnow = false;
+        int id = 0;
 
+
+
+        #region properties
+        public int Id 
+        {
+            get => id;
+            set
+            {
+
+                id = value;
+                Connect();
+                OnPropertyChanged();
+            }
+        }
 
         public string EnglishWord
         {
@@ -158,7 +184,6 @@ namespace PolishEnglishDictionary.ViewModel
             {
 
                 englishWord = value;
-
                 OnPropertyChanged();
             }
         }
@@ -170,30 +195,70 @@ namespace PolishEnglishDictionary.ViewModel
             {
 
                 polishWorld = value;
-
                 OnPropertyChanged();
             }
         }
 
+        public bool IKnow
+        {
+            get => iKnow;
+            set
+            {
+
+                iKnow = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
+
         public Dictionary()
         {
-            
+            Connection();
+            Connect();
         }
-        public Dictionary(string englishWord, string polishWorld)
+
+ 
+        public void IKnowing(int id, bool know)
         {
-            this.EnglishWord = englishWord;
-            this.PolishWorld = polishWorld;
-
-            AddTuple(englishWord, polishWorld);
+            Connection();
+            sqlConnection.Open();
+            using (SqlCommand command2 = new SqlCommand("Update Words set IKnow = @IKnow where Id = @PW", sqlConnection))
+            {
+                command2.Parameters.Add(new SqlParameter("@PW", id));
+                command2.Parameters.Add(new SqlParameter("@IKnow", know));
+                command2.ExecuteNonQuery();
+            }         
+            sqlConnection.Close();
         }
 
-        public void AddTuple(string englishWord, string polishWorld)
+        public void Connect()
         {
-            myDic.Add(new Tuple<string, string>(englishWord, polishWorld));
+            id++;
+            sqlConnection.Open();
+            string query = "SELECT  * FROM Words where Id = @PW";
+            SqlCommand command = new SqlCommand(query, sqlConnection);
+            command.Parameters.Add(new SqlParameter("@PW", id));
+
+            SqlDataReader rader = command.ExecuteReader();
+            while (rader.Read())
+            {
+                PolishWorld = (string)rader["PolishWorld"];
+                EnglishWord = (string)rader["EnglishWorld"];
+                IKnow = (bool)rader["IKnow"];
+            }
+            sqlConnection.Close();
         }
 
-
-    
+        private void Connection()
+        {
+            string srvrbdname = "DictionaryDatabase";
+            string srvrname = "192.168.8.105";
+            string srvarusername = "Paulina";
+            string srvrpassword = "123456";
+            string sqlconn = $"Data Source={srvrname};Initial Catalog={srvrbdname};User ID={srvarusername};Password={srvrpassword}";
+            sqlConnection = new SqlConnection(sqlconn);
+        }
 
         #region PropertyChange
         public event PropertyChangedEventHandler PropertyChanged;
