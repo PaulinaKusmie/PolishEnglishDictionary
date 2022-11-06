@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -84,6 +85,7 @@ namespace PolishEnglishDictionary.ViewModel
 
 
         #endregion
+        public bool IsBackwardNavAllowed { get; set; } = false;
 
         public DictionaryPageViewModel()
         {
@@ -93,8 +95,51 @@ namespace PolishEnglishDictionary.ViewModel
             NoRememberCommand = new Command(NoRemember);
             Word = dic.PolishWord;
 
+    
+            OnAppearingCommand = new Command(() => OnAppearing());
+            OnDisappearingCommand = new Command(() => OnDisappearing());
+
         }
 
+        
+        public Command OnAppearingCommand { get; set; }
+
+        public Command OnDisappearingCommand { get; set; }
+
+       
+
+        private void OnAppearing()
+        {
+            Shell.Current.Navigating += Current_Navigating;
+        }
+
+        private void OnDisappearing()
+        {
+            Shell.Current.Navigating -= Current_Navigating;
+        }
+
+        private async void Current_Navigating(object sender, ShellNavigatingEventArgs e)
+        {
+            if (e.CanCancel)
+            {
+                e.Cancel();
+                await GoBack();
+            }
+        }
+
+        private async Task GoBack()
+        {
+            var result = await Shell.Current.DisplayAlert(
+                "Going Back?",
+                "Are you sure you want to go back?",
+                "Yes, Please!", "Nope!");
+
+            if (result)
+            {
+                Shell.Current.Navigating -= Current_Navigating;
+                await Shell.Current.GoToAsync("..", true);
+            }
+        }
         private void Remember()
         {
             dic.IKnowing(dic.Id, true);
@@ -164,7 +209,7 @@ namespace PolishEnglishDictionary.ViewModel
         string world = string.Empty;
         bool iKnow = false;
         int id = 0;
-
+        string know = string.Empty;
 
 
         #region Properties
@@ -175,7 +220,7 @@ namespace PolishEnglishDictionary.ViewModel
             {
 
                 id = value;
-                Connect();
+                ///Connect();
                 OnPropertyChanged();
             }
         }
@@ -209,10 +254,22 @@ namespace PolishEnglishDictionary.ViewModel
             {
 
                 iKnow = value;
+                Change(iKnow);
                 OnPropertyChanged();
             }
         }
 
+
+        public string Know
+        {
+            get => know;
+            set
+            {
+
+                know = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -223,13 +280,45 @@ namespace PolishEnglishDictionary.ViewModel
         }
 
 
-        public int FindCount()
+
+        public void Change(bool bit)
         {
+            if(bit == true)
+            {
+                Know = "Umiem";
+            }
+            else
+            {
+                Know = "Nie umiem"; 
+            }
+
+        }
+
+
+        public void DeleteWord(int Id)
+        {
+
+            Connection();
+            sqlConnection.Open();
+            using (SqlCommand command2 = new SqlCommand("DELETE FROM Words (nolock) WHERE Id = @PW", sqlConnection))
+            {
+                command2.Parameters.Add(new SqlParameter("@PW", Id));
+                command2.ExecuteNonQuery();
+            }
+            sqlConnection.Close();
+        }
+
+
+
+
+        public List<int> FindCount()
+        {
+            List<int> Listcount = new List<int>();
             string cnd = ConnectionString();
             int count = 0;
-
+            int start = 0;
             sqlConnection.Open();
-            using (SqlCommand command2 = new SqlCommand("SELECT TOP 1 * FROM Words order BY Id DESC", sqlConnection))
+            using (SqlCommand command2 = new SqlCommand("SELECT TOP 1 * FROM Words (nolock) order BY Id DESC", sqlConnection))
             {
                 SqlDataReader rader = command2.ExecuteReader();
                 while (rader.Read())
@@ -239,41 +328,62 @@ namespace PolishEnglishDictionary.ViewModel
             }
             sqlConnection.Close();
 
-            return count;
+
+            sqlConnection.Open();
+            using (SqlCommand command2 = new SqlCommand("SELECT TOP 1 * FROM Words (nolock) order BY Id ASC", sqlConnection))
+            {
+                SqlDataReader rader = command2.ExecuteReader();
+                while (rader.Read())
+                {
+                    start = Convert.ToInt32(rader["Id"]);
+                }
+            }
+            sqlConnection.Close();
+
+            Listcount.Add(count);
+            Listcount.Add(start);
+
+
+
+            return Listcount;
         }
 
 
 
-        public ObservableCollection<Dictionary> ListDictionary(int count)
+        public ObservableCollection<Dictionary> ListDictionary(int count, int start)
         {
             ObservableCollection<Dictionary> ListWord = new ObservableCollection<Dictionary>();
-            //Connection();
-            //sqlConnection.Close();
+
 
             Connection2();
-            for (int i = 1; i < count; i++)
+            for (int i = start; i < count; i++)
             {
                 sqlConnection2.Open();
-                using (SqlCommand command = new SqlCommand("SELECT  * FROM Words where Id = @PW", sqlConnection2))
+                using (SqlCommand command = new SqlCommand("SELECT  * FROM Words (nolock) where Id = @PW", sqlConnection2))
                 {
                     command.Parameters.Add(new SqlParameter("@PW", i));
                     SqlDataReader radera = command.ExecuteReader();
                     while (radera.Read())
                     {
-                        Id = Convert.ToInt32(radera["Id"]);
+                        //Id = (int)(radera["Id"]);
                         PolishWord = (string)radera["PolishWorld"];
                         EnglishWord = (string)radera["EnglishWorld"];
                         IKnow = (bool)radera["IKnow"];
                     }
 
+                    if (radera.HasRows == true)
+                    {
+                        Dictionary dic = new Dictionary();
+                        dic.Id = i;
+                        dic.PolishWord = PolishWord;
+                        dic.EnglishWord = EnglishWord;
+                        dic.IKnow = IKnow;
 
-                    Dictionary dic = new Dictionary();
-                    dic.Id = Id;
-                    dic.PolishWord = PolishWord;
-                    dic.EnglishWord = EnglishWord;
-                    dic.IKnow = IKnow;
+                        ListWord.Add(dic);
+                    }
+               
 
-                    ListWord.Add(dic);
+                    
                 }
                 sqlConnection2.Close();
             }
@@ -291,7 +401,7 @@ namespace PolishEnglishDictionary.ViewModel
         {
             Connection();
             sqlConnection.Open();
-            using (SqlCommand command2 = new SqlCommand("Update Words set IKnow = @IKnow where Id = @PW", sqlConnection))
+            using (SqlCommand command2 = new SqlCommand("Update Words (nolock) set IKnow = @IKnow where Id = @PW", sqlConnection))
             {
                 command2.Parameters.Add(new SqlParameter("@PW", id));
                 command2.Parameters.Add(new SqlParameter("@IKnow", know));
@@ -304,7 +414,7 @@ namespace PolishEnglishDictionary.ViewModel
         {
             id++;
             sqlConnection.Open();
-            string query = "SELECT  * FROM Words where Id = @PW";
+            string query = "SELECT  * FROM Words (nolock) where Id = @PW";
             SqlCommand command = new SqlCommand(query, sqlConnection);
             command.Parameters.Add(new SqlParameter("@PW", id));
 

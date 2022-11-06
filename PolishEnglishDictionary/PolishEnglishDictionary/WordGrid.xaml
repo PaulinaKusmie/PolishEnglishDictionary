@@ -2,52 +2,91 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PolishEnglishDictionary.ViewModel"
-             x:Class="PolishEnglishDictionary.WordGrid">
+             x:Class="PolishEnglishDictionary.WordGrid"
+             x:Name="UsersPage">
     <ContentPage.BindingContext>
         <local:WordGridViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content >
         <StackLayout>
-            <ListView ItemsSource="{Binding Employees}" HasUnevenRows="True" SeparatorVisibility="None">
-                <ListView.ItemTemplate>
+
+
+            <CollectionView ItemsSource="{Binding Words}" SelectedItem="{Binding WordItem}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                            Orientation="Vertical"
+                            ItemSpacing="6"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
 
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid Padding="10" >
-                              
-                                <Frame CornerRadius="10" >
-                                    <Frame.Background>
-                                        <LinearGradientBrush  StartPoint="0,0" EndPoint="1,1">
-                                            <GradientStop Color="MediumVioletRed" Offset="0"/>
-                                            <GradientStop Color="Bisque" Offset="0.445"/>
-                                            <GradientStop Color="#651A4A" Offset="0.53"/>
-                                        </LinearGradientBrush>
-                                    </Frame.Background>
-                                    <StackLayout>
-                                        <StackLayout Orientation="Horizontal">
-                                            
-                                            <Label VerticalOptions="Center" Text="{Binding EnglishWord}" FontSize="Large"></Label>
-                                            <Image Source="edit.png" VerticalOptions="EndAndExpand" 
-                                                WidthRequest="40"
-                                                HeightRequest="40"/>
+                       
+                       
+                            <SwipeView>
+                                <SwipeView.RightItems>
+
+                                <SwipeItem Text="Edytuj" BackgroundColor="Blue" Command="{Binding Path=BindingContext.EditWordCommand, Source={x:Reference Name=UsersPage}}" CommandParameter="{Binding .}"
+                                           IconImageSource="edit.png" />
+                                <SwipeItem Text="Usuń" BackgroundColor="Red" Command="{Binding BindingContext.DeleteWordCommand, Source={x:Reference Name=UsersPage}}" CommandParameter="{Binding .}"
+                                           IconImageSource="trash.png"/>
+                                   
+                                </SwipeView.RightItems>
+                                
+                                
+
+                                <Grid Padding="2" >
+                                    <Frame CornerRadius="10" HeightRequest="60">
+                                        <Frame.Background>
+                                            <LinearGradientBrush  StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="MediumVioletRed" Offset="0"/>
+                                                <GradientStop Color="Bisque" Offset="0.445"/>
+                                                <GradientStop Color="#651A4A" Offset="0.53"/>
+                                            </LinearGradientBrush>
+                                        </Frame.Background>
+                                        <StackLayout>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+
+
+                                                <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                                                    <Label VerticalOptions="Center" Text="{Binding EnglishWord}" FontSize="Large"/>
+                                                    <Label VerticalOptions="Center" Text="{Binding PolishWord}" FontSize="Large"/>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Horizontal"  Grid.Row="1" Grid.Column="0">
+                                                    <Label VerticalOptions="Center" Text="{Binding Know}" FontSize="Large"></Label>
+                                                </StackLayout>
+
+                                                <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="1" VerticalOptions="End">
+                                                    <Image Source="edit.png" VerticalOptions="EndAndExpand" 
+                                                        WidthRequest="30"
+                                                        HeightRequest="30"/>
+                                                    <Image Source="trash.png" VerticalOptions="EndAndExpand" 
+                                                         WidthRequest="30"
+                                                        HeightRequest="30"/>
+                                                </StackLayout>
+
+                                            </Grid>
+
                                         </StackLayout>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label VerticalOptions="Center" Text="{Binding PolishWord}" FontSize="Large"></Label>
-                                            <Image Source="trash.png" VerticalOptions="EndAndExpand" 
-                                                 WidthRequest="40"
-                                                HeightRequest="40"/>
-                                        </StackLayout>
-     
-                                    </StackLayout>
-                                </Frame>
-                            </Grid>
-                        </ViewCell>
+                                    </Frame>
+                                </Grid>
+                            </SwipeView>
+                      
+                       
                     </DataTemplate>
-                </ListView.ItemTemplate>
+                </CollectionView.ItemTemplate>
                 
                 
-            </ListView>
+            </CollectionView>
 
 
 

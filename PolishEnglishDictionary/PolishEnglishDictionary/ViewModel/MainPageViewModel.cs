@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 namespace PolishEnglishDictionary.ViewModel
 {
      class MainPageViewModel : INotifyPropertyChanged
-    {
+     {
         public ICommand StartLearningCommand { get; set; }
         public ICommand StudyProgressCommand { get; set; }
         public ICommand AddWorldCommand { get; set; }
@@ -22,8 +22,6 @@ namespace PolishEnglishDictionary.ViewModel
             StartLearningCommand = new Command(StartLearning);
             StudyProgressCommand = new Command(StudyProgress);
             AddWorldCommand = new Command(AddWorld);
-
-          
         }
 
 

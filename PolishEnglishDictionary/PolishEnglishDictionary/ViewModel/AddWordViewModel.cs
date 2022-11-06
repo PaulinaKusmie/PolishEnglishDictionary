@@ -20,7 +20,6 @@ namespace PolishEnglishDictionary.ViewModel
 
         #endregion
 
-
         #region --Properties--
         public string EnglishWord
         {
@@ -85,7 +84,7 @@ namespace PolishEnglishDictionary.ViewModel
         {
             int number = 0;
             sqlConnection.Open();
-            string query = "SELECT count(*) as number From Words; ";
+            string query = "SELECT count(*) as number From Words (nolock) ; ";
             SqlCommand command = new SqlCommand(query, sqlConnection);
             SqlDataReader rader = command.ExecuteReader();
             while (rader.Read())
@@ -106,7 +105,7 @@ namespace PolishEnglishDictionary.ViewModel
                 int id = 0;
 
                 sqlConnection.Open();
-                string query = "SELECT TOP 1 * FROM Words order BY Id DESC";
+                string query = "SELECT TOP 1 * FROM Words (nolock) order BY Id DESC";
                 SqlCommand command = new SqlCommand(query, sqlConnection);
                 SqlDataReader rader = command.ExecuteReader();
                 while (rader.Read())
@@ -124,7 +123,7 @@ namespace PolishEnglishDictionary.ViewModel
                     return;
                 }
                 sqlConnection.Open();
-                using (SqlCommand command2 = new SqlCommand("Insert into Words VALUES(@Id, @EnglishWorld, @PolishWorld, @IKnow)", sqlConnection))
+                using (SqlCommand command2 = new SqlCommand("Insert into Words (nolock) VALUES(@Id, @EnglishWorld, @PolishWorld, @IKnow)", sqlConnection))
                 {
                     command2.Parameters.Add(new SqlParameter("Id", id));
                     command2.Parameters.Add(new SqlParameter("EnglishWorld", EnglishWord));
