@@ -39,10 +39,9 @@ namespace PolishEnglishDictionary.ViewModel
 
 
         INavigation Navigation => Application.Current.MainPage.Navigation;
-        private void StudyProgress()
+        private async void StudyProgress()
         {
-       
-
+            await Navigation.PushModalAsync(new WordGrid());
         }
 
         #region INotifyPropertyChanged

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:PolishEnglishDictionary.ViewModel"
+             x:Class="PolishEnglishDictionary.WordGrid">
+    <ContentPage.BindingContext>
+        <local:WordGridViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content >
+        <StackLayout>
+            <ListView ItemsSource="{Binding Employees}" HasUnevenRows="True" SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10" >
+                              
+                                <Frame CornerRadius="10" >
+                                    <Frame.Background>
+                                        <LinearGradientBrush  StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="MediumVioletRed" Offset="0"/>
+                                            <GradientStop Color="Bisque" Offset="0.445"/>
+                                            <GradientStop Color="#651A4A" Offset="0.53"/>
+                                        </LinearGradientBrush>
+                                    </Frame.Background>
+                                    <StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            
+                                            <Label VerticalOptions="Center" Text="{Binding EnglishWord}" FontSize="Large"></Label>
+                                            <Image Source="edit.png" VerticalOptions="EndAndExpand" 
+                                                WidthRequest="40"
+                                                HeightRequest="40"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label VerticalOptions="Center" Text="{Binding PolishWord}" FontSize="Large"></Label>
+                                            <Image Source="trash.png" VerticalOptions="EndAndExpand" 
+                                                 WidthRequest="40"
+                                                HeightRequest="40"/>
+                                        </StackLayout>
+     
+                                    </StackLayout>
+                                </Frame>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+                
+            </ListView>
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+    
+    
+    
+    <!--<StackLayout Padding="20" Spacing="0">
+        <Label Margin="0,0,0,20" FontSize="Large" Text="MY COMPANY DATA LIST" TextColor="Black" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Frame BackgroundColor="Crimson" BorderColor="DarkSlateGray" HeightRequest="60" Padding="0">
+            <Grid Padding="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                    <ColumnDefinition Width="2.5*"/>
+                </Grid.ColumnDefinitions>
+                
+                --><!--<Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="NameSort_Tapped"/>
+                </Label.GestureRecognizers>--><!--
+
+
+                <Label Margin="10,0,10,0" Text="Id" VerticalOptions="Center"  Grid.Column="0">
+                
+                </Label>
+                <Label Margin="10,0,10,0" Text="Słowo" VerticalOptions="Center"  Grid.Column="1" />
+                <Label Margin="10,0,10,0" Text="Tłumaczenie" VerticalOptions="Center"  Grid.Column="2" />
+                <Label Margin="10,0,10,0" Text="Czy umiem" VerticalOptions="Center"  Grid.Column="3" />
+
+                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" />
+                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" />
+                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="2" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" />
+                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="3" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" />
+            </Grid>
+        </Frame>
+        
+        <ListView x:Name="EmplooyeList" ItemsSource="{Binding Dictionary}" SeparatorVisibility="None" SelectionMode="None" HasUnevenRows="False">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Frame  Padding="0" BorderColor="DarkSlateGray">
+                            <Grid Padding="0" RowSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                    <ColumnDefinition Width="2.5*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Margin="10,0,10,0" Text="{Binding Id}" VerticalOptions="Center"  Grid.Column="0"  />
+                                <Label Margin="10,0,10,0" Text="{Binding EnglishWord}" VerticalOptions="Center"  Grid.Column="1" />
+                                <Label Margin="10,0,10,0" Text="{Binding PolishWorld}" VerticalOptions="Center"  Grid.Column="2" />
+                                <Label Margin="10,0,10,0" Text="{Binding IKnow}" VerticalOptions="Center"  Grid.Column="3" />
+
+                                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="0" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand" />
+                                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="2" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                                <BoxView BackgroundColor="DarkSlateGray" WidthRequest="1" Grid.Column="3" HorizontalOptions="EndAndExpand" VerticalOptions="FillAndExpand"/>
+                            </Grid>
+
+                        </Frame>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>-->
+</ContentPage>
